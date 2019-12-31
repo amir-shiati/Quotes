@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.amirshiati.quotes.consts.Consts;
 import com.amirshiati.quotes.helper.RequestQueueSingletone;
+import com.amirshiati.quotes.helper.TouchHelper;
 import com.amirshiati.quotes.models.Quotes;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -33,7 +37,7 @@ public class AllQuotesActivity extends AppCompatActivity {
     private List<Quotes> allQuotes = new ArrayList<>();
 
     //for hand gestures
-    private GestureDetector mDetector;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +48,30 @@ public class AllQuotesActivity extends AppCompatActivity {
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
 
-        // get the gesture detector
-//        mDetector = new GestureDetector(this, new MyGestureListener());
-
         animationDrawable.setEnterFadeDuration(2500);
         animationDrawable.setExitFadeDuration(5000);
 
         animationDrawable.start();
         getAllQuotes();
+
+        relativeLayout.setOnTouchListener(new TouchHelper(AllQuotesActivity.this) {
+            public void onSwipeTop() {
+                Toast.makeText(AllQuotesActivity.this, "top", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeRight() {
+                Toast.makeText(AllQuotesActivity.this, "right", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeLeft() {
+                Toast.makeText(AllQuotesActivity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeBottom() {
+                Toast.makeText(AllQuotesActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
     }
 
