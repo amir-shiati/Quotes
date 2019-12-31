@@ -54,6 +54,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         animationDrawable.start();
         getAllQuotes();
 
+        //swipe gestures
         relativeLayout.setOnTouchListener(new TouchHelper(AllQuotesActivity.this) {
             public void onSwipeTop() {
                 Toast.makeText(AllQuotesActivity.this, "top", Toast.LENGTH_SHORT).show();
