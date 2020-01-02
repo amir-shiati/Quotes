@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.widget.RelativeLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +36,10 @@ public class AllQuotesActivity extends AppCompatActivity {
     private String TAG = "AllQuotesActivity = ";
     private List<Quotes> allQuotes = new ArrayList<>();
 
-    private boolean allQuotesAreIn = false;
-    private int quoteToShow = -1;
+    private int quoteToShow = 0;
+
+    private TextSwitcher quoteTextView;
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,55 +47,37 @@ public class AllQuotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_all_quotes);
 
         //main container background used for hand gestures and gradiant animations
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
+        relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
+        quoteTextView = (TextSwitcher) findViewById(R.id.quote_text_view);
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
 
         animationDrawable.setEnterFadeDuration(2500);
         animationDrawable.setExitFadeDuration(5000);
 
+        quoteTextView.setInAnimation(this, R.anim.slide_up);
+        quoteTextView.setOutAnimation(this, R.anim.slid_down);
+
         animationDrawable.start();
         getAllQuotes();
-
-        //swipe gestures
-        relativeLayout.setOnTouchListener(new HandGestures(AllQuotesActivity.this) {
-            public void onSwipeTop() {
-                if (allQuotesAreIn) {
-                    quoteToShowHandler(true);
-                    updateQuoteContainer();
-                }
-            }
-
-            public void onSwipeRight() {
-                Toast.makeText(AllQuotesActivity.this, "right", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onSwipeLeft() {
-                Toast.makeText(AllQuotesActivity.this, "left", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onSwipeBottom() {
-                Log.i(TAG, "bottom");
-                if (allQuotesAreIn) {
-                    quoteToShowHandler(false);
-                    updateQuoteContainer();
-                }
-            }
-
-        });
 
     }
 
     private void updateQuoteContainer() {
-        TextView quoteTextView = (TextView) findViewById(R.id.quote_text_view);
         quoteTextView.setText(allQuotes.get(quoteToShow).getQuote());
     }
 
-    private void quoteToShowHandler(boolean swipedUp) {
-        if (swipedUp && quoteToShow < (allQuotes.size() - 1))
+    private boolean updateQuotesContainer(boolean swipedUp) {
+        if (swipedUp && quoteToShow < (allQuotes.size() - 1)) {
             quoteToShow++;
+            return true;
+        }
 
-        if (!swipedUp && quoteToShow > 0)
+        if (!swipedUp && quoteToShow > 0) {
             quoteToShow--;
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -111,9 +96,8 @@ public class AllQuotesActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                allQuotesAreIn = true;
-                Log.i(TAG, "All quotes are in");
-                Log.i(TAG, String.valueOf(allQuotes.size()));
+                setContainerSwipGestures();
+                quoteTextView.setCurrentText(allQuotes.get(0).getQuote());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -143,5 +127,28 @@ public class AllQuotesActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueueSingletone.getInstance(this).addToRequestQueue(jsonArrayRequest);
+    }
+
+    private void setContainerSwipGestures() {
+        //swipe gestures
+        relativeLayout.setOnTouchListener(new HandGestures(AllQuotesActivity.this) {
+            public void onSwipeTop() {
+                if (updateQuotesContainer(true))
+                    updateQuoteContainer();
+            }
+
+            public void onSwipeRight() {
+                Toast.makeText(AllQuotesActivity.this, "right", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeLeft() {
+                Toast.makeText(AllQuotesActivity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeBottom() {
+                if (updateQuotesContainer(false))
+                    updateQuoteContainer();
+            }
+        });
     }
 }
