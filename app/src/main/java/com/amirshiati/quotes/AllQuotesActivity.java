@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amirshiati.quotes.consts.Consts;
 import com.amirshiati.quotes.helper.RequestQueueSingletone;
-import com.amirshiati.quotes.helper.TouchHelper;
+import com.amirshiati.quotes.helper.HandGestures;
 import com.amirshiati.quotes.models.Quotes;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -36,8 +35,8 @@ public class AllQuotesActivity extends AppCompatActivity {
     private String TAG = "AllQuotesActivity = ";
     private List<Quotes> allQuotes = new ArrayList<>();
 
-    //for hand gestures
-    private GestureDetector gestureDetector;
+    private boolean allQuotesAreIn = false;
+    private int quoteToShow = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +54,12 @@ public class AllQuotesActivity extends AppCompatActivity {
         getAllQuotes();
 
         //swipe gestures
-        relativeLayout.setOnTouchListener(new TouchHelper(AllQuotesActivity.this) {
+        relativeLayout.setOnTouchListener(new HandGestures(AllQuotesActivity.this) {
             public void onSwipeTop() {
-                Toast.makeText(AllQuotesActivity.this, "top", Toast.LENGTH_SHORT).show();
+                if (allQuotesAreIn) {
+                    quoteToShowHandler(true);
+                    updateQuoteContainer();
+                }
             }
 
             public void onSwipeRight() {
@@ -69,11 +71,30 @@ public class AllQuotesActivity extends AppCompatActivity {
             }
 
             public void onSwipeBottom() {
-                Toast.makeText(AllQuotesActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "bottom");
+                if (allQuotesAreIn) {
+                    quoteToShowHandler(false);
+                    updateQuoteContainer();
+                }
             }
 
         });
 
+    }
+
+    private void updateQuoteContainer() {
+        TextView quoteTextView = (TextView) findViewById(R.id.quote_text_view);
+        quoteTextView.setText(allQuotes.get(quoteToShow).getQuote());
+    }
+
+    private void quoteToShowHandler(boolean swipedUp) {
+        if (swipedUp && quoteToShow < (allQuotes.size() - 1))
+            quoteToShow++;
+
+        if (!swipedUp && quoteToShow > 0)
+            quoteToShow--;
+
+        Log.i(TAG, String.valueOf(quoteToShow));
     }
 
     public void getAllQuotes() {
@@ -91,7 +112,9 @@ public class AllQuotesActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
+                allQuotesAreIn = true;
+                Log.i(TAG, "All quotes are in");
+                Log.i(TAG, String.valueOf(allQuotes.size()));
             }
         }, new Response.ErrorListener() {
             @Override
