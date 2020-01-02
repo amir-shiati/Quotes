@@ -94,7 +94,6 @@ public class AllQuotesActivity extends AppCompatActivity {
         if (!swipedUp && quoteToShow > 0)
             quoteToShow--;
 
-        Log.i(TAG, String.valueOf(quoteToShow));
     }
 
     public void getAllQuotes() {
