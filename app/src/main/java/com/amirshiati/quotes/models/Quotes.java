@@ -1,5 +1,10 @@
 package com.amirshiati.quotes.models;
 
+import android.graphics.Typeface;
+import android.util.Log;
+
+import com.amirshiati.quotes.consts.Randoms;
+
 public class Quotes {
     private Long id;
     private String quote;
@@ -8,6 +13,9 @@ public class Quotes {
     private String writerFirstName;
     private String writerLastName;
 
+    private int assignedColor;
+    private Typeface assignedTypeFace;
+
     public Quotes(Long id, String quote, Long likes, String subject, String writerFirstName, String writerLastName) {
         this.id = id;
         this.quote = quote;
@@ -15,6 +23,32 @@ public class Quotes {
         this.subject = subject;
         this.writerFirstName = writerFirstName;
         this.writerLastName = writerLastName;
+
+        assignedColor = Randoms.allColors.get(Randoms.randomColorIndex());
+        assignedTypeFace = Randoms.allTypeFaces.get(Randoms.randomTypeFaceIndex());
+    }
+
+    @Override
+    public String toString() {
+        Log.i("s", generateQuoteAsString());
+        return generateQuoteAsString();
+    }
+
+    private String generateQuoteAsString() {
+        return "<font color=" + Randoms.quotationColor + ">" + "<b>" + "<big>" + "‟ " + "</big>" + "</b>" + "</font>" + "<font color=" + assignedColor + ">"
+                + getQuote() + "</font>"
+                + "<font color=" + Randoms.quotationColor + ">" + "<b>" + "<big>" + " ”" + "</big>" + "</b>" + "</font>";
+    }
+
+    public String firstAndLastName() {
+        String result = "";
+        if (!getWriterFirstName().equals("null")) {
+            result += getWriterFirstName();
+        }
+        if (!getWriterLastName().equals("null")) {
+            result += " " + getWriterLastName();
+        }
+        return "<font color=" + Randoms.writerNameColor + ">" + "<b>" + "<big>" + "‒ " + "</big>" + "</b>" + result + "</font>";
     }
 
     public Long getId() {
@@ -63,5 +97,9 @@ public class Quotes {
 
     public void setWriterLastName(String writerLastName) {
         this.writerLastName = writerLastName;
+    }
+
+    public Typeface getAssignedTypeFace() {
+        return assignedTypeFace;
     }
 }
