@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amirshiati.quotes.consts.Consts;
+import com.amirshiati.quotes.consts.Randoms;
 import com.amirshiati.quotes.helper.RequestQueueSingletone;
 import com.amirshiati.quotes.helper.HandGestures;
 import com.amirshiati.quotes.models.Quotes;
@@ -39,6 +41,7 @@ public class AllQuotesActivity extends AppCompatActivity {
     private int quoteToShow = 0;
 
     private TextSwitcher quoteTextView;
+    private TextSwitcher writerTextView;
     private RelativeLayout relativeLayout;
 
     @Override
@@ -46,16 +49,25 @@ public class AllQuotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_quotes);
 
+        getSupportActionBar().hide();
+        //set Randoms
+        Randoms.setAllColors(this);
+        Randoms.setTypeFaces(this);
+
         //main container background used for hand gestures and gradiant animations
         relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
         quoteTextView = (TextSwitcher) findViewById(R.id.quote_text_view);
-        AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
+        writerTextView = (TextSwitcher) findViewById(R.id.writer_text_view);
 
+        AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2500);
         animationDrawable.setExitFadeDuration(5000);
 
         quoteTextView.setInAnimation(this, R.anim.slide_up);
         quoteTextView.setOutAnimation(this, R.anim.slid_down);
+
+        writerTextView.setInAnimation(this, R.anim.slide_up);
+        writerTextView.setOutAnimation(this, R.anim.slid_down);
 
         animationDrawable.start();
         getAllQuotes();
@@ -63,22 +75,11 @@ public class AllQuotesActivity extends AppCompatActivity {
     }
 
     private void updateQuoteContainer() {
-        quoteTextView.setText(allQuotes.get(quoteToShow).getQuote());
-    }
-
-    private boolean updateQuotesContainer(boolean swipedUp) {
-        if (swipedUp && quoteToShow < (allQuotes.size() - 1)) {
-            quoteToShow++;
-            return true;
-        }
-
-        if (!swipedUp && quoteToShow > 0) {
-            quoteToShow--;
-            return true;
-        }
-
-        return false;
-
+        Quotes currentQuote = allQuotes.get(quoteToShow);
+        quoteTextView.setText(Html.fromHtml(currentQuote.toString()));
+        TextView currentView = (TextView) quoteTextView.getCurrentView();
+        currentView.setTypeface(currentQuote.getAssignedTypeFace());
+        writerTextView.setText(Html.fromHtml(currentQuote.firstAndLastName()));
     }
 
     public void getAllQuotes() {
@@ -97,7 +98,8 @@ public class AllQuotesActivity extends AppCompatActivity {
                     }
                 }
                 setContainerSwipGestures();
-                quoteTextView.setCurrentText(allQuotes.get(0).getQuote());
+                quoteTextView.setCurrentText(Html.fromHtml(allQuotes.get(0).toString()));
+                writerTextView.setText(Html.fromHtml(allQuotes.get(quoteToShow).firstAndLastName()));
             }
         }, new Response.ErrorListener() {
             @Override
@@ -151,4 +153,20 @@ public class AllQuotesActivity extends AppCompatActivity {
             }
         });
     }
+
+    private boolean updateQuotesContainer(boolean swipedUp) {
+        if (swipedUp && quoteToShow < (allQuotes.size() - 1)) {
+            quoteToShow++;
+            return true;
+        }
+
+        if (!swipedUp && quoteToShow > 0) {
+            quoteToShow--;
+            return true;
+        }
+
+        return false;
+
+    }
+
 }
