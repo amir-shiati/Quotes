@@ -46,6 +46,7 @@ public class AllQuotesActivity extends AppCompatActivity {
     private TextSwitcher quoteTextView;
     private TextSwitcher writerTextView;
     private TextSwitcher quoteTagTextView;
+    private TextSwitcher tagTextView;
     private RelativeLayout relativeLayout;
 
     @Override
@@ -64,6 +65,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         quoteTextView = (TextSwitcher) findViewById(R.id.quote_text_view);
         writerTextView = (TextSwitcher) findViewById(R.id.writer_text_view);
         quoteTagTextView = (TextSwitcher) findViewById(R.id.tag_of_quote_text_view);
+        tagTextView = (TextSwitcher) findViewById(R.id.tag_text_view);
 
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2500);
@@ -78,6 +80,8 @@ public class AllQuotesActivity extends AppCompatActivity {
         writerTextView.setOutAnimation(this, R.anim.slid_down);
         quoteTagTextView.setInAnimation(this, R.anim.slide_up);
         quoteTagTextView.setOutAnimation(this, R.anim.slid_down);
+        tagTextView.setInAnimation(this, R.anim.slide_up);
+        tagTextView.setOutAnimation(this, R.anim.slid_down);
 
         animationDrawable.start();
         bgAnimationDrawable.start();
@@ -89,6 +93,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                 quotesToShow = filterQuotesByTag();
                 quoteToShow = 0;
                 updateQuoteContainer();
+                updateTagContainer();
             }
         });
 
@@ -116,6 +121,14 @@ public class AllQuotesActivity extends AppCompatActivity {
         quoteTagTextView.setText(Html.fromHtml(currentQuote.getSubject()));
     }
 
+    private void updateTagContainer() {
+        tagTextView.setText(Html.fromHtml(quotesToShow.get(quoteToShow).getSubject()));
+    }
+
+    private void setTagContainer() {
+        tagTextView.setText(Html.fromHtml("<i> <font color=" + Randoms.tagColor + ">" + "#" + "All" + "</font> </i>"));
+    }
+
     public void getAllQuotes() {
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Consts.getAllQuotesURL, null, new Response.Listener<JSONArray>() {
@@ -133,6 +146,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                 }
                 setContainerSwipGestures();
                 setQuotesToShow(allQuotes);
+                setTagContainer();
                 updateQuoteContainer();
             }
         }, new Response.ErrorListener() {

@@ -10,9 +10,10 @@
 
     <TextSwitcher
         android:id="@+id/tag_text_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:layout_above="@id/main_container_background">
+        android:layout_above="@id/main_container_background"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:layout_width="match_parent"
@@ -30,6 +31,15 @@
             android:textSize="26sp" />
 
     </TextSwitcher>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/main_container_background"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toLeftOf="@+id/tag_text_view"
+        android:background="@android:drawable/ic_media_rew" />
 
     <RelativeLayout
         android:id="@+id/main_container_background"
