@@ -8,6 +8,7 @@ import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -33,10 +34,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AllQuotesActivity extends AppCompatActivity {
     private String TAG = "AllQuotesActivity = ";
     private List<Quotes> allQuotes = new ArrayList<>();
+    private List<Quotes> quotesToShow = new ArrayList<>();
 
     private int quoteToShow = 0;
 
@@ -80,10 +83,32 @@ public class AllQuotesActivity extends AppCompatActivity {
         bgAnimationDrawable.start();
         getAllQuotes();
 
+        quoteTagTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quotesToShow = filterQuotesByTag();
+                quoteToShow = 0;
+                updateQuoteContainer();
+            }
+        });
+
+    }
+
+    private List<Quotes> filterQuotesByTag() {
+        List<Quotes> result = new ArrayList<>();
+        for (Quotes quotes : allQuotes) {
+            if (quotes.getSubject().equals(quotesToShow.get(quoteToShow).getSubject()))
+                result.add(quotes);
+        }
+        return result;
+    }
+
+    private void setQuotesToShow(List<Quotes> toShow) {
+        quotesToShow = toShow;
     }
 
     private void updateQuoteContainer() {
-        Quotes currentQuote = allQuotes.get(quoteToShow);
+        Quotes currentQuote = quotesToShow.get(quoteToShow);
         quoteTextView.setText(Html.fromHtml(currentQuote.toString()));
         TextView currentView = (TextView) quoteTextView.getCurrentView();
         currentView.setTypeface(currentQuote.getAssignedTypeFace());
@@ -107,6 +132,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                     }
                 }
                 setContainerSwipGestures();
+                setQuotesToShow(allQuotes);
                 updateQuoteContainer();
             }
         }, new Response.ErrorListener() {
@@ -163,7 +189,7 @@ public class AllQuotesActivity extends AppCompatActivity {
     }
 
     private boolean updateQuotesContainer(boolean swipedUp) {
-        if (swipedUp && quoteToShow < (allQuotes.size() - 1)) {
+        if (swipedUp && quoteToShow < (quotesToShow.size() - 1)) {
             quoteToShow++;
             return true;
         }

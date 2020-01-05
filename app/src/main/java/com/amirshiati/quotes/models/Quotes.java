@@ -35,9 +35,9 @@ public class Quotes {
     }
 
     private String generateQuoteAsString() {
-        return "<font color=" + Randoms.quotationColor + ">" + "<b>" + "<big>" + "‟ " + "</big>" + "</b>" + "</font>" + "<font color=" + assignedColor + ">"
+        return "<font color=" + Randoms.quotationColor + ">" + "<b>" + "<big>" + "\" " + "</big>" + "</b>" + "</font>" + "<font color=" + assignedColor + ">"
                 + getQuote() + "</font>"
-                + "<font color=" + Randoms.quotationColor + ">" + "<b>" + "<big>" + " ”" + "</big>" + "</b>" + "</font>";
+                + "<font color=" + Randoms.quotationColor + ">" + "<b>" + "<big>" + " \"" + "</big>" + "</b>" + "</font>";
     }
 
     public String firstAndLastName() {
@@ -48,7 +48,7 @@ public class Quotes {
         if (!getWriterLastName().equals("null")) {
             result += " " + getWriterLastName();
         }
-        return "<font color=" + Randoms.writerNameColor + ">" + "<b>" + "<big>" + "‒ " + "</big>" + "</b>" + result + "</font>";
+        return "<font color=" + Randoms.writerNameColor + ">" + "<b>" + "<big>" + "~ " + "</big>" + "</b>" + result + "</font>";
     }
 
     public Long getId() {

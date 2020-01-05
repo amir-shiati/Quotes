@@ -8,5 +8,4 @@ public class Consts {
     public static String getAllQuotesURL = "http://10.0.3.2:8000/api/quotes/getall";
 
     public static int requestTimeOutMilliSecondes = 5000;
-
 }

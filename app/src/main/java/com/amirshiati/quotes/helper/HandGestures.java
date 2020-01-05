@@ -5,11 +5,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class TouchHelper implements View.OnTouchListener {
+public class HandGestures implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;
 
-    public TouchHelper(Context ctx) {
+    public HandGestures(Context ctx) {
         gestureDetector = new GestureDetector(ctx, new GestureListener());
     }
 
