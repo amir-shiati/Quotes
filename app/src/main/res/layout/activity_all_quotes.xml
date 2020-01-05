@@ -2,15 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg_gradiant_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_container_stroke"
+    android:background="@drawable/bg_animation_list"
     tools:context=".AllQuotesActivity">
+
+    <TextSwitcher
+        android:id="@+id/tag_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_above="@id/main_container_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="#All"
+            android:textSize="26sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="26sp" />
+
+    </TextSwitcher>
 
     <RelativeLayout
         android:id="@+id/main_container_background"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:background="@drawable/gradiant_animation_list">
@@ -18,29 +42,74 @@
         <TextSwitcher
             android:id="@+id/quote_text_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="70dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="70dp"
+                android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:textColor="@color/main_container_stroke"
                 android:textSize="22sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="70dp"
+                android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:textColor="@color/main_container_stroke"
                 android:textSize="22sp" />
+
+        </TextSwitcher>
+
+        <TextSwitcher
+            android:id="@+id/writer_text_view"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </TextSwitcher>
+
+        <TextSwitcher
+            android:id="@+id/tag_of_quote_text_view"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </TextSwitcher>
 

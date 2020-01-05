@@ -5,6 +5,14 @@
     <color name="colorAccent">#D81B60</color>
 
 
-    <color name="main_container_stroke">#2d3436</color>
+    <color name="main_container_stroke">#636e72</color>
 
+    <color name="text_color">#182C61</color>
+    <color name="text_color_2">#222f3e</color>
+    <color name="text_color_3">#6D214F</color>
+    <color name="text_color_4">#273c75</color>
+
+    <color name="quotation">#e55039</color>
+    <color name="writer_name">#1e272e</color>
+    <color name="tag">#3B74A8</color>
 </resources>

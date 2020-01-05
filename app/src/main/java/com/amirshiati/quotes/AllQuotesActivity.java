@@ -42,6 +42,7 @@ public class AllQuotesActivity extends AppCompatActivity {
 
     private TextSwitcher quoteTextView;
     private TextSwitcher writerTextView;
+    private TextSwitcher quoteTagTextView;
     private RelativeLayout relativeLayout;
 
     @Override
@@ -56,20 +57,27 @@ public class AllQuotesActivity extends AppCompatActivity {
 
         //main container background used for hand gestures and gradiant animations
         relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
+        RelativeLayout bgRelativeLayout = (RelativeLayout) findViewById(R.id.bg_gradiant_container);
         quoteTextView = (TextSwitcher) findViewById(R.id.quote_text_view);
         writerTextView = (TextSwitcher) findViewById(R.id.writer_text_view);
+        quoteTagTextView = (TextSwitcher) findViewById(R.id.tag_of_quote_text_view);
 
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2500);
         animationDrawable.setExitFadeDuration(5000);
+        AnimationDrawable bgAnimationDrawable = (AnimationDrawable) bgRelativeLayout.getBackground();
+        bgAnimationDrawable.setEnterFadeDuration(5000);
+        bgAnimationDrawable.setExitFadeDuration(10000);
 
         quoteTextView.setInAnimation(this, R.anim.slide_up);
         quoteTextView.setOutAnimation(this, R.anim.slid_down);
-
         writerTextView.setInAnimation(this, R.anim.slide_up);
         writerTextView.setOutAnimation(this, R.anim.slid_down);
+        quoteTagTextView.setInAnimation(this, R.anim.slide_up);
+        quoteTagTextView.setOutAnimation(this, R.anim.slid_down);
 
         animationDrawable.start();
+        bgAnimationDrawable.start();
         getAllQuotes();
 
     }
@@ -80,6 +88,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         TextView currentView = (TextView) quoteTextView.getCurrentView();
         currentView.setTypeface(currentQuote.getAssignedTypeFace());
         writerTextView.setText(Html.fromHtml(currentQuote.firstAndLastName()));
+        quoteTagTextView.setText(Html.fromHtml(currentQuote.getSubject()));
     }
 
     public void getAllQuotes() {
@@ -98,8 +107,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                     }
                 }
                 setContainerSwipGestures();
-                quoteTextView.setCurrentText(Html.fromHtml(allQuotes.get(0).toString()));
-                writerTextView.setText(Html.fromHtml(allQuotes.get(quoteToShow).firstAndLastName()));
+                updateQuoteContainer();
             }
         }, new Response.ErrorListener() {
             @Override

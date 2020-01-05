@@ -76,7 +76,7 @@ public class Quotes {
     }
 
     public String getSubject() {
-        return subject;
+        return "<i> <font color=" + Randoms.tagColor + ">" + "#" + subject + "</font> </i>";
     }
 
     public void setSubject(String subject) {

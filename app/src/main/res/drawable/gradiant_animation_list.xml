@@ -3,22 +3,22 @@
 
     <item
         android:drawable="@drawable/gradiant_1"
-        android:duration="5000"/>
+        android:duration="5000" />
 
     <item
         android:drawable="@drawable/gradiant_2"
-        android:duration="5000"/>
+        android:duration="5000" />
 
     <item
         android:drawable="@drawable/gradiant_3"
-        android:duration="5000"/>
+        android:duration="5000" />
 
     <item
         android:drawable="@drawable/gradiant_4"
-        android:duration="5000"/>
+        android:duration="5000" />
 
     <item
         android:drawable="@drawable/gradiant_5"
-        android:duration="5000"/>
+        android:duration="5000" />
 
 </animation-list>
