@@ -8,38 +8,107 @@
     android:background="@drawable/bg_animation_list"
     tools:context=".AllQuotesActivity">
 
-    <TextSwitcher
-        android:id="@+id/tag_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:layout_above="@id/main_container_background"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="#All"
-            android:textSize="26sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textSize="26sp" />
-
-    </TextSwitcher>
-
-    <ImageButton
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/main_container_background"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_toLeftOf="@+id/tag_text_view"
-        android:background="@android:drawable/ic_media_rew" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/filters_background">
+
+        <TextSwitcher
+            android:id="@+id/tag_text_view"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="#All"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="5sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="5sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
+
+        </TextSwitcher>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/tag_text_view"
+            android:background="@android:drawable/ic_menu_close_clear_cancel" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/main_container_background"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/filters_background">
+
+        <TextSwitcher
+            android:id="@+id/by_who_text_view"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="~Everyone"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="5sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="5sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
+
+        </TextSwitcher>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/by_who_text_view"
+            android:background="@android:drawable/ic_menu_close_clear_cancel" />
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/main_container_background"
@@ -63,14 +132,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:textSize="22sp" />
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:textSize="22sp" />
+                app:autoSizeTextType="uniform" />
 
         </TextSwitcher>
 
@@ -86,15 +155,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:textSize="19sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:textSize="19sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
 
         </TextSwitcher>
 
@@ -111,15 +186,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="30sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
 
         </TextSwitcher>
 
