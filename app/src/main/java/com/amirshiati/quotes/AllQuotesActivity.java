@@ -9,6 +9,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -42,11 +45,16 @@ public class AllQuotesActivity extends AppCompatActivity {
     private List<Quotes> quotesToShow = new ArrayList<>();
 
     private int quoteToShow = 0;
+    private boolean tagFilter = false;
+    private boolean writerFilter = false;
 
     private TextSwitcher quoteTextView;
     private TextSwitcher writerTextView;
     private TextSwitcher quoteTagTextView;
     private TextSwitcher tagTextView;
+    private TextSwitcher writerFilterTextView;
+    private ImageButton cancelTagFilter;
+    private ImageButton cancelWriterFilter;
     private RelativeLayout relativeLayout;
 
     @Override
@@ -66,6 +74,9 @@ public class AllQuotesActivity extends AppCompatActivity {
         writerTextView = (TextSwitcher) findViewById(R.id.writer_text_view);
         quoteTagTextView = (TextSwitcher) findViewById(R.id.tag_of_quote_text_view);
         tagTextView = (TextSwitcher) findViewById(R.id.tag_text_view);
+        writerFilterTextView = (TextSwitcher) findViewById(R.id.writer_filter_text_view);
+        cancelTagFilter = (ImageButton) findViewById(R.id.cancel_tag_filter_btn);
+        cancelWriterFilter = (ImageButton) findViewById(R.id.cancel_writer_filter_btn);
 
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2500);
@@ -82,6 +93,9 @@ public class AllQuotesActivity extends AppCompatActivity {
         quoteTagTextView.setOutAnimation(this, R.anim.slid_down);
         tagTextView.setInAnimation(this, R.anim.slide_up);
         tagTextView.setOutAnimation(this, R.anim.slid_down);
+        writerFilterTextView.setInAnimation(this, R.anim.slide_up);
+        writerFilterTextView.setOutAnimation(this, R.anim.slid_down);
+
 
         animationDrawable.start();
         bgAnimationDrawable.start();
@@ -90,19 +104,59 @@ public class AllQuotesActivity extends AppCompatActivity {
         quoteTagTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                quotesToShow = filterQuotesByTag();
-                quoteToShow = 0;
-                updateQuoteContainer();
+                quotesToShow = filterQuotesByTag(quotesToShow);
+                resetQuotes();
                 updateTagContainer();
+                tagFilter = true;
+            }
+        });
+
+        writerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quotesToShow = filterQuotesByWriter(quotesToShow);
+                resetQuotes();
+                updateWriterCOntainer();
+                writerFilter = true;
+            }
+        });
+
+        cancelTagFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, String.valueOf(tagFilter));
+                quotesToShow = (writerFilter) ? filterQuotesByWriter(allQuotes) : allQuotes;
+                resetQuotes();
+                setTagFilterContainer();
+                tagFilter = false;
+            }
+        });
+
+        cancelWriterFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quotesToShow = (tagFilter) ? filterQuotesByTag(allQuotes) : allQuotes;
+                resetQuotes();
+                setWriterFilterContainer();
+                writerFilter = false;
             }
         });
 
     }
 
-    private List<Quotes> filterQuotesByTag() {
+    private List<Quotes> filterQuotesByTag(List<Quotes> toFilter) {
         List<Quotes> result = new ArrayList<>();
-        for (Quotes quotes : allQuotes) {
+        for (Quotes quotes : toFilter) {
             if (quotes.getSubject().equals(quotesToShow.get(quoteToShow).getSubject()))
+                result.add(quotes);
+        }
+        return result;
+    }
+
+    private List<Quotes> filterQuotesByWriter(List<Quotes> toFilter) {
+        List<Quotes> result = new ArrayList<>();
+        for (Quotes quotes : toFilter) {
+            if (quotes.firstAndLastName().equals(quotesToShow.get(quoteToShow).firstAndLastName()))
                 result.add(quotes);
         }
         return result;
@@ -123,10 +177,20 @@ public class AllQuotesActivity extends AppCompatActivity {
 
     private void updateTagContainer() {
         tagTextView.setText(Html.fromHtml(quotesToShow.get(quoteToShow).getSubject()));
+        cancelTagFilter.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
     }
 
-    private void setTagContainer() {
+    private void updateWriterCOntainer() {
+        writerFilterTextView.setText(Html.fromHtml(quotesToShow.get(quoteToShow).firstAndLastName()));
+        cancelWriterFilter.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+    }
+
+    private void setTagFilterContainer() {
         tagTextView.setText(Html.fromHtml("<i> <font color=" + Randoms.tagColor + ">" + "#" + "All" + "</font> </i>"));
+    }
+
+    private void setWriterFilterContainer() {
+        writerFilterTextView.setText(Html.fromHtml("<i> <font color=" + Randoms.writerNameColor + ">" + "~ " + "Everyone" + "</font> </i>"));
     }
 
     public void getAllQuotes() {
@@ -146,7 +210,8 @@ public class AllQuotesActivity extends AppCompatActivity {
                 }
                 setContainerSwipGestures();
                 setQuotesToShow(allQuotes);
-                setTagContainer();
+                setTagFilterContainer();
+                setWriterFilterContainer();
                 updateQuoteContainer();
             }
         }, new Response.ErrorListener() {
@@ -215,6 +280,11 @@ public class AllQuotesActivity extends AppCompatActivity {
 
         return false;
 
+    }
+
+    private void resetQuotes() {
+        quoteToShow = 0;
+        updateQuoteContainer();
     }
 
 }
