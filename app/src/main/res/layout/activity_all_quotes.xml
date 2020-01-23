@@ -13,16 +13,16 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/main_container_background"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="55dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/filters_background">
 
         <TextSwitcher
             android:id="@+id/tag_text_view"
-            android:layout_width="120dp"
-            android:layout_height="70dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="15dp">
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="10dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -65,16 +65,16 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/main_container_background"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="55dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/filters_background">
 
         <TextSwitcher
             android:id="@+id/writer_filter_text_view"
-            android:layout_width="120dp"
-            android:layout_height="70dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="15dp">
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="10dp">
 
             <TextView
                 android:layout_width="match_parent"

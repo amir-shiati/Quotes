@@ -29,7 +29,7 @@ public class Randoms {
     }
 
     public static void setTypeFaces(Context context) {
-        allTypeFaces.add(Typeface.createFromAsset(context.getAssets(), "fonts/New Athletic M54.ttf"));
+        allTypeFaces.add(Typeface.createFromAsset(context.getAssets(), "fonts/Stoke-Light.ttf"));
         allTypeFaces.add(Typeface.createFromAsset(context.getAssets(), "fonts/Cinzel-Regular.ttf"));
         allTypeFaces.add(Typeface.createFromAsset(context.getAssets(), "fonts/Cocogoose-Classic-Medium-trial.ttf"));
     }

@@ -116,7 +116,7 @@ public class AllQuotesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 quotesToShow = filterQuotesByWriter(quotesToShow);
                 resetQuotes();
-                updateWriterCOntainer();
+                updateWriterContainer();
                 writerFilter = true;
             }
         });
@@ -180,7 +180,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         cancelTagFilter.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
     }
 
-    private void updateWriterCOntainer() {
+    private void updateWriterContainer() {
         writerFilterTextView.setText(Html.fromHtml(quotesToShow.get(quoteToShow).firstAndLastName()));
         cancelWriterFilter.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
     }
