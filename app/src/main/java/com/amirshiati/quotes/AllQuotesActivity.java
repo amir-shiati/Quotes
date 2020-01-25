@@ -8,6 +8,7 @@ import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class AllQuotesActivity extends AppCompatActivity {
     private boolean tagFilter = false;
     private boolean writerFilter = false;
 
+    private RelativeLayout bgRelativeLayout;
     private TextSwitcher quoteTextView;
     private TextSwitcher writerTextView;
     private TextSwitcher quoteTagTextView;
@@ -69,7 +71,7 @@ public class AllQuotesActivity extends AppCompatActivity {
 
         //main container background used for hand gestures and gradiant animations
         relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
-        RelativeLayout bgRelativeLayout = (RelativeLayout) findViewById(R.id.bg_gradiant_container);
+        bgRelativeLayout = (RelativeLayout) findViewById(R.id.bg_gradiant_container);
         quoteTextView = (TextSwitcher) findViewById(R.id.quote_text_view);
         writerTextView = (TextSwitcher) findViewById(R.id.writer_text_view);
         quoteTagTextView = (TextSwitcher) findViewById(R.id.tag_of_quote_text_view);
@@ -78,27 +80,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         cancelTagFilter = (ImageButton) findViewById(R.id.cancel_tag_filter_btn);
         cancelWriterFilter = (ImageButton) findViewById(R.id.cancel_writer_filter_btn);
 
-        AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(2500);
-        animationDrawable.setExitFadeDuration(5000);
-        AnimationDrawable bgAnimationDrawable = (AnimationDrawable) bgRelativeLayout.getBackground();
-        bgAnimationDrawable.setEnterFadeDuration(5000);
-        bgAnimationDrawable.setExitFadeDuration(10000);
-
-        quoteTextView.setInAnimation(this, R.anim.slide_up);
-        quoteTextView.setOutAnimation(this, R.anim.slid_down);
-        writerTextView.setInAnimation(this, R.anim.slide_up);
-        writerTextView.setOutAnimation(this, R.anim.slid_down);
-        quoteTagTextView.setInAnimation(this, R.anim.slide_up);
-        quoteTagTextView.setOutAnimation(this, R.anim.slid_down);
-        tagTextView.setInAnimation(this, R.anim.slide_up);
-        tagTextView.setOutAnimation(this, R.anim.slid_down);
-        writerFilterTextView.setInAnimation(this, R.anim.slide_up);
-        writerFilterTextView.setOutAnimation(this, R.anim.slid_down);
-
-
-        animationDrawable.start();
-        bgAnimationDrawable.start();
+        setAllAnimations();
         getAllQuotes();
 
         quoteTagTextView.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +190,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                setContainerSwipGestures();
+                setContainerSwipeGestures();
                 setQuotesToShow(allQuotes);
                 setTagFilterContainer();
                 setWriterFilterContainer();
@@ -244,12 +226,22 @@ public class AllQuotesActivity extends AppCompatActivity {
         RequestQueueSingletone.getInstance(this).addToRequestQueue(jsonArrayRequest);
     }
 
-    private void setContainerSwipGestures() {
+    private void setContainerSwipeGestures() {
         //swipe gestures
         relativeLayout.setOnTouchListener(new HandGestures(AllQuotesActivity.this) {
             public void onSwipeTop() {
                 if (updateQuotesContainer(true))
                     updateQuoteContainer();
+            }
+
+            @Override
+            public void onSingleClick(View v) {
+
+            }
+
+            @Override
+            public void onDoubleClick(View v) {
+                Toast.makeText(AllQuotesActivity.this, "Like", Toast.LENGTH_SHORT).show();
             }
 
             public void onSwipeRight() {
@@ -264,6 +256,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                 if (updateQuotesContainer(false))
                     updateQuoteContainer();
             }
+
         });
     }
 
@@ -286,5 +279,30 @@ public class AllQuotesActivity extends AppCompatActivity {
         quoteToShow = 0;
         updateQuoteContainer();
     }
+
+    private void setAllAnimations() {
+        AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(5000);
+        AnimationDrawable bgAnimationDrawable = (AnimationDrawable) bgRelativeLayout.getBackground();
+        bgAnimationDrawable.setEnterFadeDuration(5000);
+        bgAnimationDrawable.setExitFadeDuration(10000);
+
+        quoteTextView.setInAnimation(this, R.anim.slide_up);
+        quoteTextView.setOutAnimation(this, R.anim.slid_down);
+        writerTextView.setInAnimation(this, R.anim.slide_up);
+        writerTextView.setOutAnimation(this, R.anim.slid_down);
+        quoteTagTextView.setInAnimation(this, R.anim.slide_up);
+        quoteTagTextView.setOutAnimation(this, R.anim.slid_down);
+        tagTextView.setInAnimation(this, R.anim.slide_up);
+        tagTextView.setOutAnimation(this, R.anim.slid_down);
+        writerFilterTextView.setInAnimation(this, R.anim.slide_up);
+        writerFilterTextView.setOutAnimation(this, R.anim.slid_down);
+
+        animationDrawable.start();
+        bgAnimationDrawable.start();
+
+    }
+
 
 }

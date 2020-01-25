@@ -5,9 +5,12 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class HandGestures implements View.OnTouchListener {
+public abstract class HandGestures implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;
+    private static final long DOUBLE_CLICK_TIME_DELTA = 300;//milliseconds
+
+    long lastClickTime = 0;
 
     public HandGestures(Context ctx) {
         gestureDetector = new GestureDetector(ctx, new GestureListener());
@@ -15,8 +18,20 @@ public class HandGestures implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        long clickTime = System.currentTimeMillis();
+        if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+            onDoubleClick(v);
+            lastClickTime = 0;
+        } else {
+            onSingleClick(v);
+        }
+        lastClickTime = clickTime;
         return gestureDetector.onTouchEvent(event);
     }
+
+    public abstract void onSingleClick(View v);
+
+    public abstract void onDoubleClick(View v);
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
