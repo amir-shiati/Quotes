@@ -7,11 +7,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
@@ -38,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class AllQuotesActivity extends AppCompatActivity {
     private String TAG = "AllQuotesActivity = ";
@@ -234,16 +230,6 @@ public class AllQuotesActivity extends AppCompatActivity {
                     updateQuoteContainer();
             }
 
-            @Override
-            public void onSingleClick(View v) {
-
-            }
-
-            @Override
-            public void onDoubleClick(View v) {
-                Toast.makeText(AllQuotesActivity.this, "Like", Toast.LENGTH_SHORT).show();
-            }
-
             public void onSwipeRight() {
                 Toast.makeText(AllQuotesActivity.this, "right", Toast.LENGTH_SHORT).show();
             }
@@ -255,6 +241,9 @@ public class AllQuotesActivity extends AppCompatActivity {
             public void onSwipeBottom() {
                 if (updateQuotesContainer(false))
                     updateQuoteContainer();
+            }
+            public void onDoubleClick(){
+                Toast.makeText(AllQuotesActivity.this, "like", Toast.LENGTH_SHORT).show();
             }
 
         });
