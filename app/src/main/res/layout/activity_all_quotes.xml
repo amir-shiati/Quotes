@@ -113,11 +113,35 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/main_container_background"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/btns_container_background">
+
+
+        <CheckBox
+            android:id="@+id/like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:background="@drawable/like_btn"
+            android:stateListAnimator="@animator/scale"
+            android:button="@null"
+            android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/main_container_background"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/gradiant_animation_list">
 
         <TextSwitcher

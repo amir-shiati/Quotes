@@ -3,13 +3,19 @@ package com.amirshiati.quotes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -17,6 +23,7 @@ import android.widget.Toast;
 
 import com.amirshiati.quotes.consts.Consts;
 import com.amirshiati.quotes.consts.Randoms;
+import com.amirshiati.quotes.helper.LikeAction;
 import com.amirshiati.quotes.helper.RequestQueueSingletone;
 import com.amirshiati.quotes.helper.HandGestures;
 import com.amirshiati.quotes.models.Quotes;
@@ -119,6 +126,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                 writerFilter = false;
             }
         });
+
 
     }
 
@@ -242,8 +250,10 @@ public class AllQuotesActivity extends AppCompatActivity {
                 if (updateQuotesContainer(false))
                     updateQuoteContainer();
             }
-            public void onDoubleClick(){
+
+            public void onDoubleClick() {
                 Toast.makeText(AllQuotesActivity.this, "like", Toast.LENGTH_SHORT).show();
+                LikeAction likeAction = new LikeAction(quotesToShow.get(quoteToShow).getId(), AllQuotesActivity.this, AllQuotesActivity.this);
             }
 
         });
@@ -292,6 +302,5 @@ public class AllQuotesActivity extends AppCompatActivity {
         bgAnimationDrawable.start();
 
     }
-
 
 }
