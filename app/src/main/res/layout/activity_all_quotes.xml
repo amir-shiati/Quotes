@@ -113,6 +113,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/btns_container"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_below="@id/main_container_background"
@@ -129,9 +130,25 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="25dp"
             android:background="@drawable/like_btn"
-            android:stateListAnimator="@animator/scale"
             android:button="@null"
-            android:checked="false" />
+            android:checked="false"
+            android:stateListAnimator="@animator/scale" />
+
+        <TextView
+            android:id="@+id/like_counter"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/like_btn"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="1234567"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform" />
     </RelativeLayout>
 
     <RelativeLayout
