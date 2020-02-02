@@ -15,6 +15,7 @@ public class Quotes {
 
     private int assignedColor;
     private Typeface assignedTypeFace;
+    private boolean liked = false;
 
     public Quotes(Long id, String quote, Long likes, String subject, String writerFirstName, String writerLastName) {
         this.id = id;
@@ -101,5 +102,13 @@ public class Quotes {
 
     public Typeface getAssignedTypeFace() {
         return assignedTypeFace;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }
