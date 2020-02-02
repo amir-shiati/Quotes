@@ -9,6 +9,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
@@ -56,10 +58,9 @@ public class AllQuotesActivity extends AppCompatActivity {
     private ImageButton cancelTagFilter;
     private ImageButton cancelWriterFilter;
     private RelativeLayout relativeLayout;
+    private CheckBox likeBox;
 
     private LikeActions likeActions;
-
-    private static AllQuotesActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,6 @@ public class AllQuotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_all_quotes);
 
         getSupportActionBar().hide();
-        instance = this;
         //set Randoms
         Randoms.setAllColors(this);
         Randoms.setTypeFaces(this);
@@ -83,8 +83,10 @@ public class AllQuotesActivity extends AppCompatActivity {
         writerFilterTextView = (TextSwitcher) findViewById(R.id.writer_filter_text_view);
         cancelTagFilter = (ImageButton) findViewById(R.id.cancel_tag_filter_btn);
         cancelWriterFilter = (ImageButton) findViewById(R.id.cancel_writer_filter_btn);
+        likeBox = (CheckBox) findViewById(R.id.like_btn);
 
         setAllAnimations();
+        //setLikeListener();
         getAllQuotes();
 
         quoteTagTextView.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +133,16 @@ public class AllQuotesActivity extends AppCompatActivity {
 
     }
 
-    public static AllQuotesActivity getInstance() {
-        return instance;
+    private void setLikeListener() {
+        likeBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b)
+                    likeActions.addLike(quotesToShow.get(quoteToShow));
+                else
+                    likeActions.undoLike(quotesToShow.get(quoteToShow));
+            }
+        });
     }
 
     private List<Quotes> filterQuotesByTag(List<Quotes> toFilter) {
@@ -306,16 +316,6 @@ public class AllQuotesActivity extends AppCompatActivity {
         animationDrawable.start();
         bgAnimationDrawable.start();
 
-    }
-
-    public void undoLike(long id) {
-        for (Quotes quotes : allQuotes) {
-            if (quotes.getId() == id) {
-                quotes.setLiked(false);
-                quotes.setLikes(quotes.getLikes() - 1);
-                //TODO take it back here
-            }
-        }
     }
 
 }

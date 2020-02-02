@@ -48,9 +48,15 @@ public class LikeActions {
 
     public void addLike(Quotes likedQuote) {
         addToLikeCounter();
-        changeLikeIcon();
-        putLike(likedQuote.getId());
+        putLike(likedQuote);
         likedQuote.setLiked(true);
+        likedQuote.setLikes(likedQuote.getLikes() + 1);
+        likeBox.setChecked(true);
+    }
+
+    public void undoLike(Quotes quote) {
+        quote.setLiked(false);
+        quote.setLikes(quote.getLikes() - 1);
     }
 
     public void setLikeCounter(Quotes quote) {
@@ -61,10 +67,6 @@ public class LikeActions {
         likeBox.setChecked(quote.isLiked());
     }
 
-    private void changeLikeIcon() {
-        likeBox.setChecked(true);
-    }
-
     private void addToLikeCounter() {
         likeCounter.setVisibility(View.INVISIBLE);
         likeCounter.setText(String.valueOf(Integer.parseInt(likeCounter.getText().toString()) + 1));
@@ -72,8 +74,8 @@ public class LikeActions {
         likeCounter.setVisibility(View.VISIBLE);
     }
 
-    private void putLike(final long id) {
-        String url = Consts.addLikeURL + id;
+    private void putLike(final Quotes quote) {
+        String url = Consts.addLikeURL + quote.getId();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -81,7 +83,7 @@ public class LikeActions {
                 try {
                     int result = response.getInt("roweffected");
                     if (result == 0)
-                        didntLike(id);
+                        didntLike(quote);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -90,7 +92,7 @@ public class LikeActions {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i(TAG, error.toString());
-                didntLike(id);
+                didntLike(quote);
             }
         }) {
             @Override
@@ -116,11 +118,10 @@ public class LikeActions {
 
     }
 
-    private void didntLike(long id) {
+    private void didntLike(Quotes quote) {
         Toast.makeText(context, Consts.likeErr_mgs, Toast.LENGTH_SHORT).show();
-        AllQuotesActivity allQuotesActivity = AllQuotesActivity.getInstance();
-        allQuotesActivity.undoLike(id);
-
+        quote.setLiked(false);
+        quote.setLikes(quote.getLikes() - 1);
     }
 }
 
