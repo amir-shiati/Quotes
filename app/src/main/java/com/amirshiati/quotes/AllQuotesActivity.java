@@ -313,6 +313,7 @@ public class AllQuotesActivity extends AppCompatActivity {
             if (quotes.getId() == id) {
                 quotes.setLiked(false);
                 quotes.setLikes(quotes.getLikes() - 1);
+                //TODO take it back here
             }
         }
     }
