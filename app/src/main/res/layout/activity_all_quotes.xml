@@ -136,19 +136,31 @@
 
         <TextView
             android:id="@+id/like_counter"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/like_btn"
             android:gravity="left"
             android:padding="10dp"
-            android:text="1234567"
+            android:text="1234"
             android:textColor="@color/text_color"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="15sp"
             app:autoSizeMinTextSize="1sp"
             app:autoSizeStepGranularity="1sp"
             app:autoSizeTextType="uniform" />
+
+        <CheckBox
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/like_counter"
+            android:background="@drawable/save_btn"
+            android:button="@null"
+            android:checked="false"
+            android:stateListAnimator="@animator/scale" />
     </RelativeLayout>
 
     <RelativeLayout
