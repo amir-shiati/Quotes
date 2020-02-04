@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amirshiati.quotes.AllQuotesActivity;
 import com.amirshiati.quotes.R;
 import com.amirshiati.quotes.consts.Consts;
 import com.amirshiati.quotes.models.Quotes;
@@ -26,11 +25,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LikeActions {
     private String TAG = "LikeActions: ";
+    public ArrayList<Long> likes = new ArrayList<>();
 
     private Context context;
     private Activity activity;
@@ -38,17 +39,25 @@ public class LikeActions {
     private TextView likeCounter;
     private CheckBox likeBox;
 
+    private TinyDB tinyDB;
+
     public LikeActions(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
 
+        tinyDB = new TinyDB(context);
+        tinyDB.clear();
+        getLikesList();
         likeCounter = activity.findViewById(R.id.like_counter);
         likeBox = (CheckBox) activity.findViewById(R.id.like_btn);
     }
 
     public void addLike(Quotes likedQuote) {
+        if (likedQuote.isLiked())
+            return;
         addToLikeCounter();
         putLike(likedQuote);
+        addToLikeLists(likedQuote.getId());
         likedQuote.setLiked(true);
         likedQuote.setLikes(likedQuote.getLikes() + 1);
         likeBox.setChecked(true);
@@ -72,6 +81,15 @@ public class LikeActions {
         likeCounter.setText(String.valueOf(Integer.parseInt(likeCounter.getText().toString()) + 1));
         TransitionManager.beginDelayedTransition((RelativeLayout) activity.findViewById(R.id.btns_container), new Fade());
         likeCounter.setVisibility(View.VISIBLE);
+    }
+
+    private void getLikesList() {
+        likes = tinyDB.getListLong(Consts.likeListDBName);
+    }
+
+    private void addToLikeLists(long toAdd) {
+        likes.add(toAdd);
+        tinyDB.putListLong(Consts.likeListDBName, likes);
     }
 
     private void putLike(final Quotes quote) {

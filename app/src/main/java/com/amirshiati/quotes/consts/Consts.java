@@ -11,5 +11,7 @@ public class Consts {
 
     public static String likeErr_mgs = "couldn't like the quote!";
 
+    public static String likeListDBName = "likes";
+
     public static int requestTimeOutMilliSecondes = 5000;
 }

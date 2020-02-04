@@ -22,6 +22,7 @@ import com.amirshiati.quotes.consts.Randoms;
 import com.amirshiati.quotes.helper.LikeActions;
 import com.amirshiati.quotes.helper.RequestQueueSingletone;
 import com.amirshiati.quotes.helper.HandGestures;
+import com.amirshiati.quotes.helper.TinyDB;
 import com.amirshiati.quotes.models.Quotes;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -86,7 +87,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         likeBox = (CheckBox) findViewById(R.id.like_btn);
 
         setAllAnimations();
-        //setLikeListener();
+        setLikeListener();
         getAllQuotes();
 
         quoteTagTextView.setOnClickListener(new View.OnClickListener() {
@@ -134,13 +135,15 @@ public class AllQuotesActivity extends AppCompatActivity {
     }
 
     private void setLikeListener() {
-        likeBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        likeBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b)
-                    likeActions.addLike(quotesToShow.get(quoteToShow));
-                else
-                    likeActions.undoLike(quotesToShow.get(quoteToShow));
+            public void onClick(View view) {
+                Log.i(TAG, "clicked");
+                if (likeBox.isChecked()) {
+                    Log.i(TAG, "checked");
+                } else {
+                    Log.i(TAG, "not checked");
+                }
             }
         });
     }
@@ -214,6 +217,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                 setQuotesToShow(allQuotes);
                 setTagFilterContainer();
                 setWriterFilterContainer();
+                setLikeQuotes();
                 updateQuoteContainer();
             }
         }, new Response.ErrorListener() {
@@ -316,6 +320,14 @@ public class AllQuotesActivity extends AppCompatActivity {
         animationDrawable.start();
         bgAnimationDrawable.start();
 
+    }
+
+    private void setLikeQuotes() {
+        for (Quotes quotes : allQuotes) {
+            if (likeActions.likes.contains(quotes.getId())) {
+                quotes.setLiked(true);
+            }
+        }
     }
 
 }
