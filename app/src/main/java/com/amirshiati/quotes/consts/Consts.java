@@ -14,6 +14,7 @@ public class Consts {
     public static String removeLikeErr_mgs = "couldn't unlike the quote!";
 
     public static String likeListDBName = "likes";
+    public static String savedQuotesDBName = "saved";
 
     public static int requestTimeOutMilliSecondes = 5000;
 }

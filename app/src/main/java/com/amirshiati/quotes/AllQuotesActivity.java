@@ -323,7 +323,7 @@ public class AllQuotesActivity extends AppCompatActivity {
 
     private void setLikeQuotes() {
         for (Quotes quotes : allQuotes) {
-            if (likeActions.likes.contains(quotes.getId())) {
+            if (likeActions.getLikes().contains(quotes.getId())) {
                 quotes.setLiked(true);
             }
         }

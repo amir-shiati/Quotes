@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class LikeActions {
     private String TAG = "LikeActions";
-    public ArrayList<Long> likes = new ArrayList<>();
+    private ArrayList<Long> likes = new ArrayList<>();
 
     private Context context;
     private Activity activity;
@@ -71,7 +71,7 @@ public class LikeActions {
         quote.setLiked(false);
         quote.setLikes(quote.getLikes() - 1);
         likeBox.setChecked(false);
-        removeFromeLikeLists(quote.getId());
+        removeFromLikeLists(quote.getId());
     }
 
     public void setLikeCounter(Quotes quote) {
@@ -98,7 +98,7 @@ public class LikeActions {
         tinyDB.putListLong(Consts.likeListDBName, likes);
     }
 
-    private void removeFromeLikeLists(long toRemove) {
+    private void removeFromLikeLists(long toRemove) {
         likes.remove(toRemove);
         tinyDB.putListLong(Consts.likeListDBName, likes);
     }
@@ -199,6 +199,14 @@ public class LikeActions {
     private void didntRemoveLike(Quotes quote) {
         Toast.makeText(context, Consts.removeLikeErr_mgs, Toast.LENGTH_SHORT).show();
         addLike(quote);
+    }
+
+    public ArrayList<Long> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(ArrayList<Long> likes) {
+        this.likes = likes;
     }
 }
 

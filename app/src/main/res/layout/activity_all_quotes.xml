@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="75dp"
             android:background="@drawable/like_btn"
             android:button="@null"
             android:checked="false"
@@ -137,7 +137,7 @@
         <TextView
             android:id="@+id/like_counter"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/like_btn"
             android:gravity="left"
@@ -146,7 +146,7 @@
             android:textColor="@color/text_color"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="15sp"
-            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMinTextSize="10sp"
             app:autoSizeStepGranularity="1sp"
             app:autoSizeTextType="uniform" />
 
@@ -155,7 +155,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/like_counter"
             android:background="@drawable/save_btn"
             android:button="@null"
