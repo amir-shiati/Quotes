@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AllQuotesActivity extends AppCompatActivity {
-    private String TAG = "AllQuotesActivity = ";
+    private String TAG = "AllQuotesActivity";
     private List<Quotes> allQuotes = new ArrayList<>();
     private List<Quotes> quotesToShow = new ArrayList<>();
 
@@ -138,12 +138,11 @@ public class AllQuotesActivity extends AppCompatActivity {
         likeBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "clicked");
-                if (likeBox.isChecked()) {
-                    Log.i(TAG, "checked");
-                } else {
-                    Log.i(TAG, "not checked");
-                }
+                if (((CompoundButton) view).isChecked())
+                    likeActions.addLike(quotesToShow.get(quoteToShow));
+                else
+                    likeActions.undoLike(quotesToShow.get(quoteToShow));
+
             }
         });
     }
@@ -237,7 +236,7 @@ public class AllQuotesActivity extends AppCompatActivity {
 
             @Override
             public Priority getPriority() {
-                return Priority.HIGH;
+                return Priority.IMMEDIATE;
             }
         };
 

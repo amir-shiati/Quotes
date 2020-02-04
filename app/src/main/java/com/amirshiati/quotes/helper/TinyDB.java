@@ -1,3 +1,7 @@
+/*
+all the credits of this class goes to https://github.com/kcochibili
+check his amazing repo out https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
+ */
 package com.amirshiati.quotes.helper;
 
 
