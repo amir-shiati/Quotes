@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LikeActions {
-    private String TAG = "LikeActions: ";
+    private String TAG = "LikeActions";
     public ArrayList<Long> likes = new ArrayList<>();
 
     private Context context;
@@ -46,7 +46,7 @@ public class LikeActions {
         this.activity = activity;
 
         tinyDB = new TinyDB(context);
-        tinyDB.clear();
+        //tinyDB.clear();
         getLikesList();
         likeCounter = activity.findViewById(R.id.like_counter);
         likeBox = (CheckBox) activity.findViewById(R.id.like_btn);
@@ -55,8 +55,8 @@ public class LikeActions {
     public void addLike(Quotes likedQuote) {
         if (likedQuote.isLiked())
             return;
-        addToLikeCounter();
-        putLike(likedQuote);
+        addToLikeCounter(1);
+        addLikeServer(likedQuote);
         addToLikeLists(likedQuote.getId());
         likedQuote.setLiked(true);
         likedQuote.setLikes(likedQuote.getLikes() + 1);
@@ -64,8 +64,14 @@ public class LikeActions {
     }
 
     public void undoLike(Quotes quote) {
+        if (!quote.isLiked())
+            return;
+        addToLikeCounter(-1);
+        removeLikeServer(quote);
         quote.setLiked(false);
         quote.setLikes(quote.getLikes() - 1);
+        likeBox.setChecked(false);
+        removeFromeLikeLists(quote.getId());
     }
 
     public void setLikeCounter(Quotes quote) {
@@ -76,9 +82,9 @@ public class LikeActions {
         likeBox.setChecked(quote.isLiked());
     }
 
-    private void addToLikeCounter() {
+    private void addToLikeCounter(long toAdd) {
         likeCounter.setVisibility(View.INVISIBLE);
-        likeCounter.setText(String.valueOf(Integer.parseInt(likeCounter.getText().toString()) + 1));
+        likeCounter.setText(String.valueOf(Integer.parseInt(likeCounter.getText().toString()) + toAdd));
         TransitionManager.beginDelayedTransition((RelativeLayout) activity.findViewById(R.id.btns_container), new Fade());
         likeCounter.setVisibility(View.VISIBLE);
     }
@@ -92,7 +98,12 @@ public class LikeActions {
         tinyDB.putListLong(Consts.likeListDBName, likes);
     }
 
-    private void putLike(final Quotes quote) {
+    private void removeFromeLikeLists(long toRemove) {
+        likes.remove(toRemove);
+        tinyDB.putListLong(Consts.likeListDBName, likes);
+    }
+
+    private void addLikeServer(final Quotes quote) {
         String url = Consts.addLikeURL + quote.getId();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
 
@@ -124,7 +135,51 @@ public class LikeActions {
 
             @Override
             public Request.Priority getPriority() {
-                return Request.Priority.HIGH;
+                return Priority.LOW;
+            }
+        };
+        jsonObjectRequest.setRetryPolicy(new
+                DefaultRetryPolicy(
+                Consts.requestTimeOutMilliSecondes,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueueSingletone.getInstance(context).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    private void removeLikeServer(final Quotes quote) {
+        String url = Consts.removeLikeURL + quote.getId();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    int result = response.getInt("roweffected");
+                    if (result == 0)
+                        didntRemoveLike(quote);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, error.toString());
+                didntRemoveLike(quote);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", String.format("Basic %s", Base64.encodeToString(String.format("%s:%s", Consts.userName, Consts.passWord).getBytes(), Base64.DEFAULT)));
+                params.put("username", Consts.userName);
+                params.put("password", Consts.passWord);
+                return params;
+            }
+
+            @Override
+            public Request.Priority getPriority() {
+                return Priority.LOW;
             }
         };
         jsonObjectRequest.setRetryPolicy(new
@@ -138,8 +193,12 @@ public class LikeActions {
 
     private void didntLike(Quotes quote) {
         Toast.makeText(context, Consts.likeErr_mgs, Toast.LENGTH_SHORT).show();
-        quote.setLiked(false);
-        quote.setLikes(quote.getLikes() - 1);
+        undoLike(quote);
+    }
+
+    private void didntRemoveLike(Quotes quote) {
+        Toast.makeText(context, Consts.removeLikeErr_mgs, Toast.LENGTH_SHORT).show();
+        addLike(quote);
     }
 }
 
