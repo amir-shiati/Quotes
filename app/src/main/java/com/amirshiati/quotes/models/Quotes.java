@@ -16,6 +16,7 @@ public class Quotes {
     private int assignedColor;
     private Typeface assignedTypeFace;
     private boolean liked = false;
+    private boolean saved = false;
 
     public Quotes(Long id, String quote, Long likes, String subject, String writerFirstName, String writerLastName) {
         this.id = id;
@@ -110,5 +111,13 @@ public class Quotes {
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
 }

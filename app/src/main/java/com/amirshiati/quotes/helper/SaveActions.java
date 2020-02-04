@@ -2,7 +2,9 @@ package com.amirshiati.quotes.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.CheckBox;
 
+import com.amirshiati.quotes.R;
 import com.amirshiati.quotes.consts.Consts;
 import com.amirshiati.quotes.models.Quotes;
 
@@ -15,17 +17,34 @@ public class SaveActions {
     private ArrayList<Quotes> savedQuotes = new ArrayList<Quotes>();
 
     private TinyDB tinyDB;
+    private CheckBox savedBox;
 
     public SaveActions(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
 
         tinyDB = new TinyDB(context);
+        savedBox = activity.findViewById(R.id.save_btn);
         getSaveQuotes();
+    }
+
+    public void setSaveState(Quotes quote) {
+        savedBox.setChecked(quote.isSaved());
     }
 
     public void saveQuote(Quotes toSave) {
         savedQuotes.add(toSave);
+        tinyDB.putListObject(Consts.savedQuotesDBName, castToObject(savedQuotes));
+        toSave.setSaved(true);
+        setSaveState(toSave);
+    }
+
+    public void unsaveQuote(Quotes toDelete) {
+        toDelete.setSaved(false);
+        for (int i = 0; i < savedQuotes.size(); i++) {
+            if (savedQuotes.get(i).getId() == toDelete.getId())
+                savedQuotes.remove(i);
+        }
         tinyDB.putListObject(Consts.savedQuotesDBName, castToObject(savedQuotes));
     }
 

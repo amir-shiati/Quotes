@@ -22,6 +22,7 @@ import com.amirshiati.quotes.consts.Randoms;
 import com.amirshiati.quotes.helper.LikeActions;
 import com.amirshiati.quotes.helper.RequestQueueSingletone;
 import com.amirshiati.quotes.helper.HandGestures;
+import com.amirshiati.quotes.helper.SaveActions;
 import com.amirshiati.quotes.helper.TinyDB;
 import com.amirshiati.quotes.models.Quotes;
 import com.android.volley.AuthFailureError;
@@ -60,8 +61,10 @@ public class AllQuotesActivity extends AppCompatActivity {
     private ImageButton cancelWriterFilter;
     private RelativeLayout relativeLayout;
     private CheckBox likeBox;
+    private CheckBox saveBox;
 
     private LikeActions likeActions;
+    private SaveActions saveActions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         Randoms.setAllColors(this);
         Randoms.setTypeFaces(this);
         likeActions = new LikeActions(AllQuotesActivity.this, AllQuotesActivity.this);
+        saveActions = new SaveActions(AllQuotesActivity.this, AllQuotesActivity.this);
 
         //main container background used for hand gestures and gradiant animations
         relativeLayout = (RelativeLayout) findViewById(R.id.main_container_background);
@@ -85,9 +89,11 @@ public class AllQuotesActivity extends AppCompatActivity {
         cancelTagFilter = (ImageButton) findViewById(R.id.cancel_tag_filter_btn);
         cancelWriterFilter = (ImageButton) findViewById(R.id.cancel_writer_filter_btn);
         likeBox = (CheckBox) findViewById(R.id.like_btn);
+        saveBox = (CheckBox) findViewById(R.id.save_btn);
 
         setAllAnimations();
         setLikeListener();
+        setSaveListener();
         getAllQuotes();
 
         quoteTagTextView.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +153,19 @@ public class AllQuotesActivity extends AppCompatActivity {
         });
     }
 
+    private void setSaveListener() {
+        saveBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((CompoundButton) view).isChecked())
+                    saveActions.saveQuote(quotesToShow.get(quoteToShow));
+                else
+                    saveActions.unsaveQuote(quotesToShow.get(quoteToShow));
+
+            }
+        });
+    }
+
     private List<Quotes> filterQuotesByTag(List<Quotes> toFilter) {
         List<Quotes> result = new ArrayList<>();
         for (Quotes quotes : toFilter) {
@@ -177,6 +196,7 @@ public class AllQuotesActivity extends AppCompatActivity {
         writerTextView.setText(Html.fromHtml(currentQuote.firstAndLastName()));
         quoteTagTextView.setText(Html.fromHtml(currentQuote.getSubject()));
         likeActions.setLikeCounter(currentQuote);
+        saveActions.setSaveState(currentQuote);
     }
 
     private void updateTagContainer() {
@@ -217,6 +237,7 @@ public class AllQuotesActivity extends AppCompatActivity {
                 setTagFilterContainer();
                 setWriterFilterContainer();
                 setLikeQuotes();
+                setSaveQuotes();
                 updateQuoteContainer();
             }
         }, new Response.ErrorListener() {
@@ -259,6 +280,7 @@ public class AllQuotesActivity extends AppCompatActivity {
 
             public void onSwipeRight() {
                 Toast.makeText(AllQuotesActivity.this, "right", Toast.LENGTH_SHORT).show();
+                saveActions.saveQuote(quotesToShow.get(quoteToShow));
             }
 
             public void onSwipeLeft() {
@@ -325,6 +347,16 @@ public class AllQuotesActivity extends AppCompatActivity {
         for (Quotes quotes : allQuotes) {
             if (likeActions.getLikes().contains(quotes.getId())) {
                 quotes.setLiked(true);
+            }
+        }
+    }
+
+    private void setSaveQuotes() {
+        for (Quotes quotes : allQuotes) {
+            for (Quotes quote : saveActions.getSavedQuotes()) {
+                if (quote.getId() == quotes.getId()) {
+                    quotes.setSaved(true);
+                }
             }
         }
     }

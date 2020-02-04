@@ -99,7 +99,10 @@ public class LikeActions {
     }
 
     private void removeFromLikeLists(long toRemove) {
-        likes.remove(toRemove);
+        for (int i = 0; i < likes.size(); i++) {
+            if (likes.get(i) == toRemove)
+                likes.remove(i);
+        }
         tinyDB.putListLong(Consts.likeListDBName, likes);
     }
 
